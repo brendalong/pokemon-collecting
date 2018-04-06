@@ -1,0 +1,35 @@
+{
+    "count": 7,
+    "previous": null,
+    "results": [
+        {
+            "url": "https://pokeapi.co/api/v2/region/1/",
+            "name": "kanto"
+        },
+        {
+            "url": "https://pokeapi.co/api/v2/region/2/",
+            "name": "johto"
+        },
+        {
+            "url": "https://pokeapi.co/api/v2/region/3/",
+            "name": "hoenn"
+        },
+        {
+            "url": "https://pokeapi.co/api/v2/region/4/",
+            "name": "sinnoh"
+        },
+        {
+            "url": "https://pokeapi.co/api/v2/region/5/",
+            "name": "unova"
+        },
+        {
+            "url": "https://pokeapi.co/api/v2/region/6/",
+            "name": "kalos"
+        },
+        {
+            "url": "https://pokeapi.co/api/v2/region/7/",
+            "name": "alola"
+        }
+    ],
+    "next": null
+}
