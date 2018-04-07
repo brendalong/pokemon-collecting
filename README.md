@@ -1,2 +1,2 @@
 # pokemon-collecting
-gathering details
+Gathering details: Some data, orgainizing data, push data to FB.

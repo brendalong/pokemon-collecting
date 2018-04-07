@@ -1,4 +1,6 @@
 console.log("bell pokemon");
+//https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png"
+
 
 let localPokedex;
 //1 is national
@@ -26,18 +28,7 @@ let kalosPokemon;
 //https://api.pokemontcg.io/v1/cards?name=Alolan
 //cards?name=Alolan%20Vulpix
 
-function loadPokemon(){
-    return $.ajax({
-        url: "pokedex.json"
-     }).done((resolve) => {
-         resolve.forEach((item) => {
-             item.region = [];
-         });
-        return resolve;
-     }).fail((error) => {
-        return error;
-     });
-  }
+
 
 function getRegionInfo(){
     //kanto
@@ -79,7 +70,7 @@ function callAddKantoToLocal(){
     });
 }
 
-
+/*
 let step1 = loadPokemon()
     .then((response) => {
         console.log("local pokedex:", response.length);
@@ -93,4 +84,445 @@ let step1 = loadPokemon()
             callAddKantoToLocal();
         });
     });
+*/
 
+function addRegions(){
+    return new Promise((resolve, reject) => {
+        localPokedex.forEach( (item) => {
+            let whichOne = item.number;
+            if (whichOne <= 151){
+                item.region = "Kanto";
+            }else if (whichOne >= 152 && whichOne <= 251){
+                item.region = "Johto";
+            }else if (whichOne >= 252 && whichOne <= 386){
+                item.region = "Hoenn";
+            }else if (whichOne >= 387 && whichOne <= 493){
+                item.region = "Sinnoh";
+            }else if (whichOne >= 494 && whichOne <= 649){
+                item.region = "Unova";
+            }else if (whichOne >= 650 && whichOne <= 721){
+                item.region = "Kalos";
+            }else if (whichOne >= 722 && whichOne <= 806){
+                item.region = "Alola";
+            }
+
+            let str = item.ThumbnailImage;
+            let newLink = str.replace("detail", "full");
+            item.FullImageURL = newLink;
+
+        });
+        resolve();
+    });
+}
+
+function addFullImageLink(){
+    return new Promise((resolve, reject) => {
+        localPokedex.forEach( (item) => {
+            //https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png
+            //https://assets.pokemon.com/assets/cms2/img/pokedex/detail/800.png
+            let str = item.ThumbnailImage;
+            let newLink = str.replace("detail", "full");
+            item.FullImageURL = newLink;
+        });
+        resolve();
+    });
+}
+
+let regionPokemon = [];
+
+function makeKantoPokemon(){
+    return $.ajax({
+        url: 'kanto.json'
+      }).done((data) => {
+          console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 1,
+                regionName: "Kanto",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeJohtoPokemon(){
+    return $.ajax({
+        url: 'updated-johto.json'
+      }).done((data) => {
+          console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 2,
+                regionName: "Johto",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeHoennPokemon(){
+    return $.ajax({
+        url: 'updated-hoenn.json'
+      }).done((data) => {
+          console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 3,
+                regionName: "Hoenn",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeSinnohPokemon(){
+    return $.ajax({
+        url: 'extended-sinnoh.json'
+      }).done((data) => {
+          console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 4,
+                regionName: "Sinnoh",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeUnovaPokemon(){
+    return $.ajax({
+        url: 'updated-unova.json'
+      }).done((data) => {
+        //   console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 5,
+                regionName: "Unova",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeKalosCentralPokemon(){
+    return $.ajax({
+        url: 'kalos-central.json'
+      }).done((data) => {
+        //   console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 6,
+                regionName: "Kalos",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeKalosCoastalPokemon(){
+    return $.ajax({
+        url: 'kalos-coastal.json'
+      }).done((data) => {
+        //   console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 6,
+                regionName: "Kalos",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeKalosMountainPokemon(){
+    return $.ajax({
+        url: 'kalos-mountain.json'
+      }).done((data) => {
+        //   console.log("waht data", data);
+        data.pokemon_entries.forEach(item => {
+            let obj = {
+                regionId: 6,
+                regionName: "Kalos",
+                pName: item.pokemon_species.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+function makeAlolaPokemon(){
+    return $.ajax({
+        url: 'alola.json'
+      }).done((data) => {
+        //   console.log("waht data", data);
+        data.pokemon_species.forEach(item => {
+            let obj = {
+                regionId: 7,
+                regionName: "Alola",
+                pName: item.name
+            }
+            regionPokemon.push(obj);
+        });
+        return data;
+      });
+}
+
+
+
+
+function uploadPokemon(){
+    let allPokemon = firebase.database().ref('allPokemon/');
+    localPokedex.forEach( (item) => {
+        allPokemon.push(item);
+    });
+}
+
+function uploadRegions(){
+    return new Promise((resolve, reject) => {
+        let regional = firebase.database().ref('regional/');
+            regionPokemon.forEach( (item) => {
+            regional.push(item);
+        });
+        resolve("jfjf");
+    });
+}
+
+function loadPokemon(){
+    return $.ajax({
+        url: "pokedex.json"
+     }).done((resolve) => {
+         resolve.forEach((item) => {
+             item.region = null;
+         });
+        return resolve;
+     }).fail((error) => {
+        return error;
+     });
+  }
+
+function startHere(){
+    loadPokemon()
+    .then((response) => {
+        localPokedex = response;
+    })
+    .then(() => {
+        addRegions()
+        .then(() => {
+            console.log("localPokedex", localPokedex)
+           
+        });
+    })
+    .then(() => {
+        console.log("done");
+//only run when ready!!
+        //uploadPokemon();
+        makeRegions();
+    });
+}
+
+
+
+function makeRegions(){
+    makeKantoPokemon()
+    .then(() => {
+        console.log("done");
+//only run when ready!!
+        uploadRegions()
+        .then((result) => {
+            console.log("kanto done");
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeJohtoPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("johto done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeHoennPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("hoenn done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeSinnohPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("sinnoh done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeUnovaPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("unova done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeKalosCentralPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("kalos central done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeKalosCoastalPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("kalos coastal done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeKalosMountainPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("kalos mountain done");
+            });
+        });
+    })
+    .then(() => {
+        regionPokemon = [];
+        makeAlolaPokemon()
+        .then((data) => {
+            console.log("done");
+//only run when ready!!
+            uploadRegions()
+            .then((result) => {
+                console.log("alola done");
+            });
+        });
+    });
+}
+
+
+//     .then(()=>{
+//         makeJohtoPokemon()
+//         .then((data) => {
+//             console.log("with johto", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeHoennPokemon()
+//         .then((data) => {
+//             console.log("with hoenn", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeSinnohPokemon()
+//         .then((data) => {
+//             console.log("with sinnoh", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeUnovaPokemon()
+//         .then((data) => {
+//             console.log("with unova", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeKalosCentralPokemon()
+//         .then((data) => {
+//             console.log("with kalos central", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeKalosCoastalPokemon()
+//         .then((data) => {
+//             console.log("with kalos coastal", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeKalosMountainPokemon()
+//         .then((data) => {
+//             console.log("with kalos mountain", regionPokemon)
+//         });
+//     })
+//     .then(()=>{
+//         makeAlolaPokemon()
+//         .then((data) => {
+//             console.log("with alola", regionPokemon)
+//         });
+//     })
+//     .then(() =>{
+//         console.log("final done");
+// //only run when ready!!
+//         // uploadRegions();
+
+//     });
+// }
+
+
+
+
+//use this only when populating the DB
+// startHere();
+//
+
+
+function getPoke() {
+    // console.log("url", firebase.getFBsettings().databaseURL);
+     return $.ajax({
+         url: `https://bell-pokemon.firebaseio.com/regional.json?orderBy="regionName"&equalTo="Alola "`
+         // url: `https://musichistory-d16.firebaseio.com/songs.json?orderBy="uid"&equalTo="${user}"`
+     }).done((pokeData) => {
+        //  console.log("pokeData in promise", pokeData);
+         return pokeData;
+    });
+ }
+
+ getPoke()
+ .then((data) => {
+     console.log("got data", data);
+ });
