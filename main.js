@@ -3,6 +3,7 @@ console.log("bell pokemon");
 
 
 let localPokedex;
+let uniquePokedex;
 //1 is national
 let kantoPokemon;
 //https://pokeapi.co/api/v2/pokedex/2/
@@ -291,7 +292,7 @@ function makeAlolaPokemon(){
 
 function uploadPokemon(){
     let allPokemon = firebase.database().ref('allPokemon/');
-    localPokedex.forEach( (item) => {
+      uniquePokedex.forEach( (item) => {
         allPokemon.push(item);
     });
 }
@@ -322,10 +323,10 @@ function loadPokemon(){
   //remove duplicates from the pokedex.json
   function uniqueSort(arrayToSort){
     return new Promise((resolve, reject) => {
-        let uniqueArrayOfObjects = arrayToSort.filter(function(obj, index, self) { 
-            return index === self.findIndex(function(t) { 
-                return t['slug'] === obj['slug'] 
-            }); 
+        let uniqueArrayOfObjects = arrayToSort.filter(function(obj, index, self) {
+            return index === self.findIndex(function(t) {
+                return t['slug'] === obj['slug']
+            });
         });
     resolve(uniqueArrayOfObjects);
     });
@@ -335,24 +336,28 @@ function startHere(){
     loadPokemon()
     .then((response) => {
         localPokedex = response;
+         console.log("1");
     })
     .then(() => {
         addRegions()
         .then(() => {
-            console.log("localPokedex", localPokedex);
+            console.log("2 localPokedex", localPokedex);
+
         });
     })
     .then(() => {
         uniqueSort(localPokedex)
         .then((data) => {
-            console.log("uniqueLocal", data);
-        });
-    })
-    .then(() => {
-        console.log("done");
-//only run when ready!!
-        //uploadPokemon();
-        //makeRegions();
+            console.log("3 uniqueLocal", data);
+            return data;
+        })
+      .then((data) => {
+         uniquePokedex = data;
+         console.log("4 done,", data);
+   //only run when ready!!
+         // uploadPokemon();
+         //makeRegions();
+      });
     });
 }
 
@@ -537,10 +542,10 @@ function makeRegions(){
 ///////// for the kalos region - remove duplicates
 function uniqueSortRegion(arrayToSort){
     return new Promise((resolve, reject) => {
-        let uniqueArrayOfObjects = arrayToSort.filter(function(obj, index, self) { 
-            return index === self.findIndex(function(t) { 
-                return t['pName'] === obj['pName'] 
-            }); 
+        let uniqueArrayOfObjects = arrayToSort.filter(function(obj, index, self) {
+            return index === self.findIndex(function(t) {
+                return t['pName'] === obj['pName']
+            });
         });
     resolve(uniqueArrayOfObjects);
     });
@@ -569,7 +574,7 @@ function uniqueSortRegion(arrayToSort){
     //         console.log("final done");
     // //only run when ready!!
     //         // uploadRegions();
-    
+
     //     });
 function makeFullKalos(){
     // regionPokemon = [];
@@ -585,12 +590,12 @@ function makeFullKalos(){
         .then(() => {
             makeKalosMountainPokemon()
             .then((data) => {
-                console.log("mountain done", regionPokemon.length); 
+                console.log("mountain done", regionPokemon.length);
             })
             .then(() => {
                 uniqueSortRegion(regionPokemon)
                 .then((data) => {
-                    console.log("newKalos", regionPokemon.length, regionPokemon); 
+                    console.log("newKalos", regionPokemon.length, regionPokemon);
                 }).then(() => {
                     console.log("all done");
                 })
@@ -606,7 +611,7 @@ function makeFullKalos(){
                         console.log("upload done");
                         });
                    });
-                    
+
                 });
             });
         });
@@ -622,13 +627,13 @@ function makeFullKalos(){
         // .then(() => {
         //     //alphabet(data)
         //     //.then((data) => {
-        //         //return data;  
+        //         //return data;
         //    // });
         // //    return data;
         // })
         // .then(() => {
         //     console.log("newKalos", regionPokemon.length, regionPokemon);
-           
+
         // })
         // .then(() => {
         //     console.log("all done now");
@@ -644,7 +649,7 @@ function makeFullKalos(){
 
 
 //use this only when populating the DB
- //startHere();
+ startHere();
 //
 
 //////// for testing ////////////////////////////////////////////
@@ -669,4 +674,3 @@ function getPoke() {
 //  .then((data) => {
 //      console.log("got data", data);
 //  });
- 
